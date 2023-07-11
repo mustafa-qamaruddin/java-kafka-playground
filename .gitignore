@@ -1,0 +1,29 @@
+# Gradle-specific files
+.gradle/
+build/
+
+# IDE-specific files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Compiled class files
+*.class
+
+# Compiled Gradle build scripts and dependency caches
+.gradle/
+.gradle-cache/
+
+# Gradle wrapper files
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+
+# Eclipse-specific files
+.settings/
+
+# IntelliJ-specific files
+*.iml
+*.ipr
+*.iws
+.idea/
