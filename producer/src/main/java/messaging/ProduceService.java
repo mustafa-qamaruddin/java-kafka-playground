@@ -1,7 +1,6 @@
 package messaging;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -13,13 +12,11 @@ public class ProduceService {
   KafkaProducer<String, String> producer;
 
   public ProduceService() {
-    // TODO handle logic when connection is shutdown
     this.producer = ProducerFactory.createProducer();
   }
 
   public void sendJsonMessage(String jsonMessage) {
     try {
-      // TODO add At least Once logic with Transaction
       ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, jsonMessage);
       producer.send(record, this::producerCallback);
     } catch (KafkaException e) {

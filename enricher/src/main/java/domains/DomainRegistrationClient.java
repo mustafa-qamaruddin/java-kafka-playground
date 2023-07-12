@@ -12,9 +12,13 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class DomainRegistrationClient {
@@ -22,14 +26,35 @@ public class DomainRegistrationClient {
   private static final String DOMAIN_REGISTRATION_ENDPOINT = "http://localhost:8000/search";
   private final OkHttpClient client;
   private final DomainsAdapter adapter;
+  private final CachingManager cache;
 
   public DomainRegistrationClient() {
     // TODO set media type headers
     client = new OkHttpClient.Builder().build();
     adapter = new DomainsAdapter();
+    cache = new CachingManager();
   }
 
-  public Map<String, DomainInfo> queryRegistrationInfo(String[] domains) {
+  public Map<String, DomainInfo> queryDomainInfos(String[] domains) {
+    Map<String, DomainInfo> cachedResults = queryCache(domains);
+    var allDomains = new HashSet<>(List.of(domains));
+    allDomains.removeAll(cachedResults.keySet());
+    String[] remainingDomains = allDomains.toArray(new String[0]);
+    Map<String, DomainInfo> freshResults = queryService(remainingDomains);
+    freshResults.forEach(cache::set);
+    cachedResults.putAll(freshResults);
+    return cachedResults;
+  }
+
+  private Map<String, DomainInfo> queryCache(String[] domains) {
+    return Arrays.stream(domains)
+        .parallel()
+        .filter(domain -> cache.get(domain) != null)
+        .collect(Collectors.toMap(domain -> domain, cache::get));
+  }
+
+
+  private Map<String, DomainInfo> queryService(String[] domains) {
 
     String jsonStringToBePosted = null;
     try {

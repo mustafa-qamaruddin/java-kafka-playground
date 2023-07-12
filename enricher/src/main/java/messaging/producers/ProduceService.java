@@ -1,34 +1,41 @@
 package messaging.producers;
 
+import enrichedclassifications.EnrichedClassification;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.KafkaException;
 
+import java.util.List;
+
 @Slf4j
 public class ProduceService {
-  // TODO make topic configurable parameter
   private static final String TOPIC_NAME = "enriched_classification_decisions";
-  KafkaProducer<String, String> producer;
+  private static final String DEAD_LETTER_QUEUE = "dlq_classification_decisions";
+  KafkaProducer<String, EnrichedClassification> producer;
 
   public ProduceService() {
-    // TODO handle logic when connection is shutdown
     this.producer = ProducerFactory.createProducer();
   }
 
-  public void sendJsonMessage(String jsonMessage) {
+  public void writeToKafka(List<EnrichedClassification> enrichedClassificationList) {
+    enrichedClassificationList.forEach(this::sendEnrichedClassificationDecision);
+  }
+
+  private void sendEnrichedClassificationDecision(EnrichedClassification enrichedClassification) {
     try {
-      // TODO add At least Once logic with Transaction
-      ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, jsonMessage);
+      ProducerRecord<String, EnrichedClassification> record = new ProducerRecord<>(TOPIC_NAME, enrichedClassification);
       producer.send(record, this::producerCallback);
     } catch (KafkaException e) {
-      log.error("Error sending JSON message: " + e.getMessage());
+      log.error("Error sending message: " + e.getMessage());
     }
   }
 
   private void producerCallback(RecordMetadata metadata, Exception exception) {
     if (exception != null) {
+      // TODO On failure push to dead letter queue
+      // TODO Think here a bit
       log.error("Error sending message: " + exception.getMessage());
     } else {
       log.info("Message sent successfully to topic " + metadata.topic());
