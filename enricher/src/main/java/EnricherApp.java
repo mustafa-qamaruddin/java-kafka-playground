@@ -15,9 +15,9 @@ import java.util.List;
 public class EnricherApp {
   private static final int CHUNK_SIZE = 100;
 
-  // TODO if end of topic reached, but not 100 yet, then enrich anyway
   public static void main(String[] args) {
     ConsumeService consumeService = new ConsumeService();
+    EnrichService enrichService = new EnrichService();
     ProduceService produceService = new ProduceService();
     while (true) {
       // Read from kafka
@@ -31,7 +31,7 @@ public class EnricherApp {
       while (recordsSplitIterator.hasNext()) {
         List<ConsumerRecord<String, ClassificationDecision>> chunk = recordsSplitIterator.next();
         // Enrich / Request Domain Registration
-        List<EnrichedClassification> enrichedClassificationList = EnrichService.enrichClassifications(chunk);
+        List<EnrichedClassification> enrichedClassificationList = enrichService.enrichClassifications(chunk);
         // Write to Kafka
         produceService.writeToKafka(enrichedClassificationList);
       }

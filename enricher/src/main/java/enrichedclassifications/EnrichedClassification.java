@@ -16,5 +16,5 @@ public class EnrichedClassification {
   private int classification;
   private String created;
   private int logic;
-  private int domainAgeInDays;
+  private long domainAgeInDays;
 }

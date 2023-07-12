@@ -12,7 +12,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,7 +34,7 @@ public class DomainRegistrationClient {
     cache = new CachingManager();
   }
 
-  public Map<String, DomainInfo> queryDomainInfos(String[] domains) {
+  public Map<String, DomainInfo> queryDomainInfos(List<String> domains) {
     Map<String, DomainInfo> cachedResults = queryCache(domains);
     var allDomains = new HashSet<>(List.of(domains));
     allDomains.removeAll(cachedResults.keySet());
@@ -46,8 +45,9 @@ public class DomainRegistrationClient {
     return cachedResults;
   }
 
-  private Map<String, DomainInfo> queryCache(String[] domains) {
-    return Arrays.stream(domains)
+  private Map<String, DomainInfo> queryCache(List<String> domains) {
+    return domains
+        .stream()
         .parallel()
         .filter(domain -> cache.get(domain) != null)
         .collect(Collectors.toMap(domain -> domain, cache::get));
