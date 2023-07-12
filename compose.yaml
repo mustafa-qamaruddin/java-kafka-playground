@@ -10,6 +10,7 @@ services:
     environment:
       - ZOOKEEPER_CLIENT_PORT=2181
 
+# TODO Idempotent false
   kafka:
     image: confluentinc/cp-kafka:latest
     container_name: kafka

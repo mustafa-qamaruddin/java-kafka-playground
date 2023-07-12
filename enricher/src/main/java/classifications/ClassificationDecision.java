@@ -1,3 +1,5 @@
+package classifications;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,8 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DomainInfo {
+public class ClassificationDecision {
+  private String url;
+  private int classification;
   private String created;
-  private String expires;
-  private String modified;
+  private int logic;
 }

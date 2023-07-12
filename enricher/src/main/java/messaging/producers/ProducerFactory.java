@@ -1,4 +1,4 @@
-package messaging;
+package messaging.producers;
 
 import lombok.experimental.UtilityClass;
 import org.apache.kafka.clients.producer.KafkaProducer;

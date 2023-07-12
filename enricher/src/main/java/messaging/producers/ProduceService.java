@@ -1,7 +1,6 @@
-package messaging;
+package messaging.producers;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -9,7 +8,8 @@ import org.apache.kafka.common.KafkaException;
 
 @Slf4j
 public class ProduceService {
-  private static final String TOPIC_NAME = "classification_decisions";
+  // TODO make topic configurable parameter
+  private static final String TOPIC_NAME = "enriched_classification_decisions";
   KafkaProducer<String, String> producer;
 
   public ProduceService() {
