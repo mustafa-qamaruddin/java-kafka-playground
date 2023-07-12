@@ -36,9 +36,9 @@ public class DomainRegistrationClient {
 
   public Map<String, DomainInfo> queryDomainInfos(List<String> domains) {
     Map<String, DomainInfo> cachedResults = queryCache(domains);
-    var allDomains = new HashSet<>(List.of(domains));
+    HashSet<String> allDomains = new HashSet<>(domains);
     allDomains.removeAll(cachedResults.keySet());
-    String[] remainingDomains = allDomains.toArray(new String[0]);
+    List<String> remainingDomains = allDomains.stream().toList();
     Map<String, DomainInfo> freshResults = queryService(remainingDomains);
     freshResults.forEach(cache::set);
     cachedResults.putAll(freshResults);
@@ -50,11 +50,12 @@ public class DomainRegistrationClient {
         .stream()
         .parallel()
         .filter(domain -> cache.get(domain) != null)
+        .distinct()
         .collect(Collectors.toMap(domain -> domain, cache::get));
   }
 
 
-  private Map<String, DomainInfo> queryService(String[] domains) {
+  private Map<String, DomainInfo> queryService(List<String> domains) {
 
     String jsonStringToBePosted = null;
     try {

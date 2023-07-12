@@ -39,6 +39,11 @@ public class EnrichService {
     return consumerRecordList.stream()
         .map(ConsumerRecord::value)
         .filter(clf -> inverseLookUps.containsKey(clf.getUrl()))
+        .filter(clf -> domainInfoMap.containsKey(
+            inverseLookUps.get(
+                clf.getUrl()
+            )
+        ))
         .map(clf -> EnrichedClassification.builder()
             .classification(clf.getClassification())
             .logic(clf.getLogic())
