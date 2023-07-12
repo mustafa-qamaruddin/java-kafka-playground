@@ -1,4 +1,4 @@
-package classification;
+package messaging;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -7,7 +7,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import java.util.Properties;
 
 public class ProducerFactory {
-  private static final String BOOTSTRAP_SERVERS = "localhost:9092";
+  private static final String BOOTSTRAP_SERVERS = "localhost:29092";
 
   public KafkaProducer<String, String> createProducer() {
     // Configure the Kafka producer
