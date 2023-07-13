@@ -40,6 +40,8 @@ public class EnricherApp {
         // Write to Kafka
         produceService.writeToKafka(enrichedClassificationList);
       }
+      // process dead letter queue
+      DeadLetterQueueService.getInstance().processQueue();
       // mark as read
       consumeService.commitOffset();
     }

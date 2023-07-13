@@ -10,7 +10,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import java.util.Properties;
 
 @UtilityClass
-public class ProducerFactory {
+class ProducerFactory {
   private static final String BOOTSTRAP_SERVERS = "localhost:29092";
 
   public KafkaProducer<String, EnrichedClassification> createProducer() {

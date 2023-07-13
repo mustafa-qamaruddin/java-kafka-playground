@@ -2,6 +2,7 @@ package messaging.producers;
 
 import enrichedclassifications.EnrichedClassification;
 import lombok.extern.slf4j.Slf4j;
+import messaging.dlq.DeadLetterQueueService;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -12,7 +13,6 @@ import java.util.List;
 @Slf4j
 public class ProduceService {
   private static final String TOPIC_NAME = "enriched_classification_decisions";
-  private static final String DEAD_LETTER_QUEUE = "dlq_classification_decisions";
   KafkaProducer<String, EnrichedClassification> producer;
 
   public ProduceService() {
@@ -34,8 +34,7 @@ public class ProduceService {
 
   private void producerCallback(RecordMetadata metadata, Exception exception) {
     if (exception != null) {
-      // TODO On failure push to dead letter queue
-      // TODO Think here a bit
+      DeadLetterQueueService.getInstance().addToQueue(metadata.offset());
       log.error("Error sending message: {}", exception.getMessage());
     } else {
       log.info("Message sent successfully to topic {}", metadata.topic());

@@ -34,6 +34,7 @@ class DlqProducerService {
   }
 
   private void producerCallback(RecordMetadata metadata, Exception exception) {
+    // TODO trigger clean offset from failed buffer in DLQ Service????
     if (exception != null) {
       log.error("DLQ: failed to push message with offset {}", metadata.offset());
     } else {

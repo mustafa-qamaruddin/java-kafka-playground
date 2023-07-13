@@ -11,7 +11,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import java.util.Properties;
 
 @UtilityClass
-public class ConsumerFactory {
+class ConsumerFactory {
   private final String BOOTSTRAP_SERVERS = "localhost:29092";
   private final String CONSUMER_GROUP_ID = "cg1";
 
