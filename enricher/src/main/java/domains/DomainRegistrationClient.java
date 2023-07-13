@@ -1,19 +1,21 @@
 package domains;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import restclients.interceptors.CacheInterceptor;
+import restclients.interceptors.JsonInterceptor;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -28,19 +30,35 @@ public class DomainRegistrationClient {
   private final CachingManager cache;
 
   public DomainRegistrationClient() {
-    // TODO set media type headers
-    client = new OkHttpClient.Builder().build();
+    long maxSize = 10 * 1024 * 1024; // 10 Mb
+    Cache clientCache = new Cache(new File("./tmp"), maxSize);
+    client = new OkHttpClient.Builder()
+        .cache(clientCache)
+        .addInterceptor(new CacheInterceptor())
+        .addInterceptor(new JsonInterceptor())
+        .addInterceptor(
+            new HttpLoggingInterceptor(
+                HttpLoggingInterceptor.Logger.DEFAULT
+            ).setLevel(HttpLoggingInterceptor.Level.BASIC)
+        )
+        .retryOnConnectionFailure(true)
+        .build();
     adapter = new DomainsAdapter();
     cache = new CachingManager();
   }
 
   public Map<String, DomainInfo> queryDomainInfos(List<String> domains) {
+    // Does exist in cache?
     Map<String, DomainInfo> cachedResults = queryCache(domains);
+    // Set Difference
     HashSet<String> allDomains = new HashSet<>(domains);
     allDomains.removeAll(cachedResults.keySet());
     List<String> remainingDomains = allDomains.stream().toList();
+    // Query microservice for uncached
     Map<String, DomainInfo> freshResults = queryService(remainingDomains);
+    // Cache results
     freshResults.forEach(cache::set);
+    // merge and return
     cachedResults.putAll(freshResults);
     return cachedResults;
   }
@@ -54,51 +72,48 @@ public class DomainRegistrationClient {
         .collect(Collectors.toMap(domain -> domain, cache::get));
   }
 
-
   private Map<String, DomainInfo> queryService(List<String> domains) {
-
+    // parse parameters
     String jsonStringToBePosted = null;
     try {
       jsonStringToBePosted = adapter.toJson(domains);
     } catch (JsonProcessingException e) {
-      // TODO
-      throw new RuntimeException(e);
+      log.error("domain parsing exception: {}", e.getMessage());
+      return Collections.emptyMap();
     }
-
+    // build request
     RequestBody body = RequestBody.create(jsonStringToBePosted, MEDIA_TYPE_JSON);
     Request request = new Request.Builder()
         .url(DOMAIN_REGISTRATION_ENDPOINT)
         .post(body)
         .build();
     Call call = client.newCall(request);
+    // send request
     Response response = null;
     try {
       response = call.execute();
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      log.error("domain registration api call exception: {}", e.getMessage());
+      return Collections.emptyMap();
     }
-    // TODO Add error handling 400, 401, 403, 500, etc
-    // TODO Use async request
-    // Todo Use callback
-    // TODO Push failed to DLQ
-    // TODO Push success to Queue and Commit Offset on Success
-    // TODO add httpOk caching
-    // TODO add inMemory Cache
-    ObjectMapper objectMapper = new ObjectMapper();
+    // check response
+    if (response.code() != 200) {
+      log.error("domain registration api call failed: {}, {}", response.code(), response.body().toString());
+      return Collections.emptyMap();
+    }
+    // handle empty response
     if (response.body() == null) {
       return Collections.emptyMap();
     }
-    TypeReference<HashMap<String, DomainInfo>> typeRef = new TypeReference<HashMap<String, DomainInfo>>() {
-    };
+    // parse results and return
     Map<String, DomainInfo> domainInfos = null;
     try {
-      domainInfos = objectMapper.readValue(response.body().bytes(), typeRef);
+      domainInfos = adapter.fromJson(response.body().string());
     } catch (IOException e) {
-      // TODO
-      throw new RuntimeException(e);
+      log.error("failed to parse json response to Domains: {}", e.getMessage());
+      return Collections.emptyMap();
     }
     response.close();
-    log.info(domainInfos.toString());
     return domainInfos;
   }
 }

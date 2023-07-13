@@ -23,6 +23,8 @@ class ConsumerFactory {
     properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, CONSUMER_GROUP_ID);
     properties.setProperty(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
     properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ClassificationDeserializer.class.getName());
+    // Batch Configuration
+    properties.setProperty(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "500");
 
     return new KafkaConsumer<>(properties);
   }

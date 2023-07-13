@@ -37,18 +37,24 @@ public class EnrichService {
   @NotNull
   private static List<EnrichedClassification> getEnrichedClassificationList(
       List<ClassificationDecision> classificationDecisionList,
-      Map<String, String> inverseLookUps,
+      Map<String, String> inverseDomainLookup,
       Map<String, DomainInfo> domainInfoMap
   ) {
     return classificationDecisionList.stream()
-        .filter(clf -> inverseLookUps.containsKey(clf.getUrl()))
+        .filter(clf -> inverseDomainLookup.containsKey(clf.getUrl()))
         .filter(clf -> domainInfoMap.containsKey(
-            inverseLookUps.get(
+            inverseDomainLookup.get(
                 clf.getUrl()
             )
         ))
         .map(
             clf -> EnrichedClassification.builder()
+                .url(clf.getUrl())
+                .domainName(
+                    inverseDomainLookup.get(
+                        clf.getUrl()
+                    )
+                )
                 .classification(clf.getClassification())
                 .logic(clf.getLogic())
                 .created(clf.getCreated())
@@ -56,7 +62,7 @@ public class EnrichService {
                     AgeCalculator.calculate(
                         clf.getCreated(),
                         domainInfoMap.get(
-                            inverseLookUps.get(
+                            inverseDomainLookup.get(
                                 clf.getUrl()
                             )
                         ).getCreated()

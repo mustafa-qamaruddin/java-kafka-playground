@@ -13,6 +13,7 @@ import lombok.Setter;
 @Builder
 public class EnrichedClassification {
   private String url;
+  private String domainName;
   private int classification;
   private String created;
   private int logic;

@@ -23,6 +23,10 @@ public class ProducerFactory {
     props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, valueType);
     props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "false");
+    // Batch Configuration
+    // 200 bytes per average message times 500 messages
+    props.put(ProducerConfig.BATCH_SIZE_CONFIG, "100000");
+    props.put(ProducerConfig.LINGER_MS_CONFIG, "100");
 
     // Create the Kafka producer
     return new KafkaProducer<>(props);
