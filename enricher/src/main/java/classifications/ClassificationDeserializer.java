@@ -10,10 +10,10 @@ import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
 
 @Slf4j
-public class ClassificationAdapter implements Deserializer<ClassificationDecision> {
+public class ClassificationDeserializer implements Deserializer<ClassificationDecision> {
   private final ObjectMapper objectMapper;
 
-  public ClassificationAdapter() {
+  public ClassificationDeserializer() {
     objectMapper = new ObjectMapper();
   }
 

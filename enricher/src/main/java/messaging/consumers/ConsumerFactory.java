@@ -1,6 +1,6 @@
 package messaging.consumers;
 
-import classifications.ClassificationAdapter;
+import classifications.ClassificationDeserializer;
 import classifications.ClassificationDecision;
 import lombok.experimental.UtilityClass;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -22,7 +22,7 @@ public class ConsumerFactory {
     properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
     properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, CONSUMER_GROUP_ID);
     properties.setProperty(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
-    properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ClassificationAdapter.class.getName());
+    properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ClassificationDeserializer.class.getName());
 
     return new KafkaConsumer<>(properties);
   }
