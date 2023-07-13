@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import messaging.consumers.ConsumeService;
 import messaging.consumers.SplitIterator;
 import messaging.dlq.DeadLetterQueueService;
-import messaging.producers.ProduceService;
+import messaging.producers.EnrichedClassificationProducerService;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class EnricherApp {
   public static void main(String[] args) {
     ConsumeService consumeService = new ConsumeService();
     EnrichService enrichService = new EnrichService();
-    ProduceService produceService = new ProduceService();
+    EnrichedClassificationProducerService produceService = new EnrichedClassificationProducerService();
     while (true) {
       // Read from kafka
       ConsumerRecords<String, ClassificationDecision> records = consumeService.pollTopic();
@@ -35,7 +35,7 @@ public class EnricherApp {
         // Enrich / Request Domain Registration
         List<EnrichedClassification> enrichedClassificationList = enrichService.enrichClassifications(chunk);
         // Write to Kafka
-        produceService.writeToKafka(enrichedClassificationList);
+        produceService.sendList(enrichedClassificationList);
       }
       // process dead letter queue
       DeadLetterQueueService.getInstance().processQueue();

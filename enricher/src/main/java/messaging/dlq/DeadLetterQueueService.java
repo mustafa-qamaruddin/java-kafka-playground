@@ -1,6 +1,7 @@
 package messaging.dlq;
 
 import classifications.ClassificationDecision;
+import messaging.producers.DeadLetterQueueProducerService;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 
 import java.util.ArrayList;
@@ -14,12 +15,12 @@ public class DeadLetterQueueService {
   private static DeadLetterQueueService instance;
   List<Long> deadLetterQueue;
   Map<Long, ClassificationDecision> messagesOffsets;
-  DlqProducerService dlqProducerService;
+  DeadLetterQueueProducerService dlqProducerService;
 
   private DeadLetterQueueService() {
     deadLetterQueue = new ArrayList<>();
     messagesOffsets = new HashMap<>();
-    dlqProducerService = new DlqProducerService();
+    dlqProducerService = new DeadLetterQueueProducerService();
   }
 
   public static synchronized DeadLetterQueueService getInstance() {
@@ -44,7 +45,7 @@ public class DeadLetterQueueService {
         .map(offset -> messagesOffsets.get(offset))
         .filter(Objects::nonNull)
         .toList();
-    dlqProducerService.writeToDlq(failedRecords);
+    dlqProducerService.sendList(failedRecords);
   }
 
   public void clean() {
