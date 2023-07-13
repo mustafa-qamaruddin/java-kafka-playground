@@ -6,13 +6,10 @@ import messaging.consumers.ConsumeService;
 import messaging.consumers.SplitIterator;
 import messaging.dlq.DeadLetterQueueService;
 import messaging.producers.ProduceService;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 public class EnricherApp {
