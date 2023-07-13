@@ -20,15 +20,15 @@ public class ProduceService {
       ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, jsonMessage);
       producer.send(record, this::producerCallback);
     } catch (KafkaException e) {
-      log.error("Error sending JSON message: " + e.getMessage());
+      log.error("Error sending JSON message: {}", e.getMessage());
     }
   }
 
   private void producerCallback(RecordMetadata metadata, Exception exception) {
     if (exception != null) {
-      log.error("Error sending message: " + exception.getMessage());
+      log.error("Error sending message: {}", exception.getMessage());
     } else {
-      log.info("Message sent successfully to topic " + metadata.topic());
+      log.info("Message sent successfully to topic {}", metadata.topic());
     }
   }
 }

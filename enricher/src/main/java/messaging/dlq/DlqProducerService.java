@@ -29,7 +29,7 @@ class DlqProducerService {
       );
       producer.send(record, this::producerCallback);
     } catch (KafkaException e) {
-      log.error("DLQ: Error sending message: " + e.getMessage());
+      log.error("DLQ: Error sending message: {}", e.getMessage());
     }
   }
 

@@ -17,7 +17,7 @@ public class ProducerApp {
       try {
         message = adapter.toJson(classificationDecision);
       } catch (JsonProcessingException e) {
-        log.error("Error serializing JSON message: " + e.getMessage());
+        log.error("Error serializing JSON message: {}", e.getMessage());
         continue;
       }
       produceService.sendJsonMessage(message);

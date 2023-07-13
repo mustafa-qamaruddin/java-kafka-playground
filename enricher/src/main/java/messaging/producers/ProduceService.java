@@ -28,7 +28,7 @@ public class ProduceService {
       ProducerRecord<String, EnrichedClassification> record = new ProducerRecord<>(TOPIC_NAME, enrichedClassification);
       producer.send(record, this::producerCallback);
     } catch (KafkaException e) {
-      log.error("Error sending message: " + e.getMessage());
+      log.error("Error sending message: {}", e.getMessage());
     }
   }
 
@@ -36,9 +36,9 @@ public class ProduceService {
     if (exception != null) {
       // TODO On failure push to dead letter queue
       // TODO Think here a bit
-      log.error("Error sending message: " + exception.getMessage());
+      log.error("Error sending message: {}", exception.getMessage());
     } else {
-      log.info("Message sent successfully to topic " + metadata.topic());
+      log.info("Message sent successfully to topic {}", metadata.topic());
     }
   }
 }
