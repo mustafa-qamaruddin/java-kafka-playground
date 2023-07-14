@@ -1,4 +1,4 @@
-package restclients.interceptors;
+package rest.interceptors;
 
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;

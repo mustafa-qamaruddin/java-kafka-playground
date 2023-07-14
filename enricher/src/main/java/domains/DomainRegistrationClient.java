@@ -1,19 +1,16 @@
 package domains;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import dev.failsafe.okhttp.FailsafeCall;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.Cache;
-import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
-import restclients.interceptors.CacheInterceptor;
-import restclients.interceptors.JsonInterceptor;
+import rest.ClientProvider;
+import rest.FailSafeDecorator;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -30,19 +27,7 @@ public class DomainRegistrationClient {
   private final CachingManager cache;
 
   public DomainRegistrationClient() {
-    long maxSize = 10 * 1024 * 1024; // 10 Mb
-    Cache clientCache = new Cache(new File("./tmp"), maxSize);
-    client = new OkHttpClient.Builder()
-        .cache(clientCache)
-        .addInterceptor(new CacheInterceptor())
-        .addInterceptor(new JsonInterceptor())
-        .addInterceptor(
-            new HttpLoggingInterceptor(
-                HttpLoggingInterceptor.Logger.DEFAULT
-            ).setLevel(HttpLoggingInterceptor.Level.BASIC)
-        )
-        .retryOnConnectionFailure(true)
-        .build();
+    client = ClientProvider.getClient();
     adapter = new DomainsAdapter();
     cache = new CachingManager();
   }
@@ -87,7 +72,10 @@ public class DomainRegistrationClient {
         .url(DOMAIN_REGISTRATION_ENDPOINT)
         .post(body)
         .build();
-    Call call = client.newCall(request);
+    // Add circuit breaker
+    FailsafeCall call = FailSafeDecorator.decorateRequest(
+        client.newCall(request)
+    );
     // send request
     Response response = null;
     try {

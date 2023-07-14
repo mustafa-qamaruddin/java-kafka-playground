@@ -1,8 +1,6 @@
-package restclients.interceptors;
+package rest.interceptors;
 
-import okhttp3.CacheControl;
 import okhttp3.Interceptor;
-import okhttp3.MediaType;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
