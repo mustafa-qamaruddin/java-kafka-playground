@@ -1,5 +1,6 @@
 package enrichers;
 
+import com.google.common.net.InternetDomainName;
 import lombok.experimental.UtilityClass;
 
 import java.net.URI;
@@ -17,10 +18,8 @@ public class DomainExtractor {
     } catch (URISyntaxException e) {
       return null;
     }
-    String domain = uri.getHost();
-    if (domain != null && domain.startsWith("www.")) {
-      domain = domain.substring(4);
-    }
-    return domain;
+    String host = uri.getHost();
+    InternetDomainName internetDomainName = InternetDomainName.from(host).topPrivateDomain();
+    return internetDomainName.toString();
   }
 }
