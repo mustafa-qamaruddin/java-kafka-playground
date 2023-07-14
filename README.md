@@ -1,4 +1,14 @@
-# User Manual
+# Components
+
+<pre>
+.
+├── compose.yaml         (Provisions the Zookeeper and Kafka Broker)
+├── domain-registration  (Mock: The Domain Registration REST Server)
+├── enricher             (The App reading, processing, and writing to Kafka)
+└── producer             (Mock: The Domain Classification Producer)
+</pre>
+
+# Usage
 
 * Run the compose.yaml services to spin up Kafka broker,
 
