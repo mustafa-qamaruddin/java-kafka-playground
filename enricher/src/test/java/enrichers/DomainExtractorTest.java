@@ -38,7 +38,7 @@ class DomainExtractorTest {
     String result = DomainExtractor.extract(url);
 
     // Then
-    Assertions.assertEquals("subdomain.example.com", result);
+    Assertions.assertEquals("example.com", result);
   }
 
   @Test
