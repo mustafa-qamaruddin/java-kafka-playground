@@ -3,59 +3,57 @@ package enrichers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class AgeCalculatorTest {
 
   @Test
   void testValidDates() {
-    // Arrange
+    // Given
     String olderDate = "2022-01-01T00:00:00Z";
     String newerDate = "2022-01-03T00:00:00Z";
 
-    // Act
+    // When
     Long result = AgeCalculator.calculate(olderDate, newerDate);
 
-    // Assert
+    // Then
     Assertions.assertEquals(2, result);
   }
 
   @Test
   void testInvalidDateFormat() {
-    // Arrange
+    // Given
     String olderDate = "2022/01/01";
     String newerDate = "2022/01/03";
 
-    // Act
+    // When
     Long result = AgeCalculator.calculate(olderDate, newerDate);
 
-    // Assert
+    // Then
     Assertions.assertNull(result);
   }
 
   @Test
   void testOlderDateAfterNewerDate() {
-    // Arrange
+    // Given
     String olderDate = "2022-01-03T00:00:00Z";
     String newerDate = "2022-01-01T00:00:00Z";
 
-    // Act
+    // When
     Long result = AgeCalculator.calculate(olderDate, newerDate);
 
-    // Assert
+    // Then
     Assertions.assertTrue(result < 0);
   }
 
   @Test
   void testSameDate() {
-    // Arrange
+    // Given
     String olderDate = "2022-01-01T00:00:00Z";
     String newerDate = "2022-01-01T00:00:00Z";
 
-    // Act
+    // When
     Long result = AgeCalculator.calculate(olderDate, newerDate);
 
-    // Assert
+    // Then
     Assertions.assertEquals(0, result);
   }
 }

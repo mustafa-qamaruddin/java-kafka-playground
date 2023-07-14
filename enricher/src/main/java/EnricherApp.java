@@ -1,4 +1,5 @@
 import classifications.ClassificationDecision;
+import domains.DomainRegistrationClient;
 import enrichedclassifications.EnrichedClassification;
 import enrichers.EnrichService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,8 @@ public class EnricherApp {
   public static void main(String[] args) {
     AdminService adminService = new AdminService();
     ConsumeService consumeService = new ConsumeService();
-    EnrichService enrichService = new EnrichService();
+    DomainRegistrationClient domainRegistrationClient = new DomainRegistrationClient();
+    EnrichService enrichService = new EnrichService(domainRegistrationClient);
     EnrichedClassificationProducerService produceService = new EnrichedClassificationProducerService();
     // Broker is up?
     if (!adminService.isBrokerUp()) {

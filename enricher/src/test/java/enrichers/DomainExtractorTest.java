@@ -3,92 +3,90 @@ package enrichers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class DomainExtractorTest {
 
   @Test
   void testValidUrlWithWww() {
-    // Arrange
+    // Given
     String url = "https://www.example.com";
 
-    // Act
+    // When
     String result = DomainExtractor.extract(url);
 
-    // Assert
+    // Then
     Assertions.assertEquals("example.com", result);
   }
 
   @Test
   void testValidUrlWithoutWww() {
-    // Arrange
+    // Given
     String url = "https://example.com";
 
-    // Act
+    // When
     String result = DomainExtractor.extract(url);
 
-    // Assert
+    // Then
     Assertions.assertEquals("example.com", result);
   }
 
   @Test
   void testUrlWithSubdomains() {
-    // Arrange
+    // Given
     String url = "https://subdomain.example.com";
 
-    // Act
+    // When
     String result = DomainExtractor.extract(url);
 
-    // Assert
+    // Then
     Assertions.assertEquals("subdomain.example.com", result);
   }
 
   @Test
   void testUrlWithPathAndQueryParameters() {
-    // Arrange
+    // Given
     String url = "https://www.example.com/path?param=value";
 
-    // Act
+    // When
     String result = DomainExtractor.extract(url);
 
-    // Assert
+    // Then
     Assertions.assertEquals("example.com", result);
   }
 
   @Test
   void testNullUrl() {
-    // Arrange
+    // Given
     String url = null;
 
-    // Act
+    // When
     String result = DomainExtractor.extract(url);
 
-    // Assert
+    // Then
     Assertions.assertNull(result);
   }
 
 
   @Test
   void testInvalidUrl() {
-    // Arrange
+    // Given
     String url = "not-a-valid-url";
 
-    // Act
+    // When
     String result = DomainExtractor.extract(url);
 
-    // Assert
+    // Then
     Assertions.assertNull(result);
   }
 
   @Test
   void testEmptyStringUrl() {
-    // Arrange
+    // Given
     String url = "";
 
-    // Act
+    // When
     String result = DomainExtractor.extract(url);
 
-    // Assert
+    // Then
     Assertions.assertNull(result);
   }
 }

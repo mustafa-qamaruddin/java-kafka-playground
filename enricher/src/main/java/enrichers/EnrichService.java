@@ -5,7 +5,6 @@ import domains.DomainInfo;
 import domains.DomainRegistrationClient;
 import enrichedclassifications.EnrichedClassification;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -17,8 +16,8 @@ import java.util.Objects;
 public class EnrichService {
   private final DomainRegistrationClient client;
 
-  public EnrichService() {
-    client = new DomainRegistrationClient();
+  public EnrichService(DomainRegistrationClient client) {
+    this.client = client;
   }
 
   public List<EnrichedClassification> enrichClassifications(
