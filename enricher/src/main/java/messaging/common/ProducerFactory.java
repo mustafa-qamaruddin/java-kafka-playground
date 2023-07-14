@@ -22,7 +22,9 @@ public class ProducerFactory {
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
     props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, valueType);
+    // At least once semantics
     props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "false");
+    props.put(ProducerConfig.ACKS_CONFIG, "all" );
     // Batch Configuration
     // 200 bytes per average message times 500 messages
     props.put(ProducerConfig.BATCH_SIZE_CONFIG, "100000");

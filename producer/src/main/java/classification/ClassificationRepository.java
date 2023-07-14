@@ -29,8 +29,8 @@ public class ClassificationRepository {
         )
     );
   }
+
   public ClassificationDecision findNext() {
-    // TODO use an iterator
     Random random = new Random();
     int randomIndex = random.nextInt(classificationData.size());
     return classificationData.get(randomIndex);
