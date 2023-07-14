@@ -17,12 +17,12 @@ public class EnricherApp {
   private static final int CHUNK_SIZE = 100;
 
   public static void main(String[] args) {
-    AdminService kafkaAdminClient = new AdminService();
+    AdminService adminService = new AdminService();
     ConsumeService consumeService = new ConsumeService();
     EnrichService enrichService = new EnrichService();
     EnrichedClassificationProducerService produceService = new EnrichedClassificationProducerService();
     // Broker is up?
-    if (!isBrokerUp(kafkaAdminClient)) {
+    if (!adminService.isBrokerUp()) {
       return;
     }
     while (true) {
@@ -48,20 +48,5 @@ public class EnricherApp {
       // mark as read
       consumeService.commitOffset();
     }
-  }
-
-  private static boolean isBrokerUp(AdminService kafkaAdminClient) {
-    try {
-      if (!kafkaAdminClient.verifyConnection()) {
-        throw new IllegalStateException("broker is not ready");
-      }
-    } catch (InterruptedException e) {
-      // interrupted exceptions are meant to stop execution
-      Thread.currentThread().interrupt();
-    } catch (Exception e) {
-      log.error("Broker unreachable {}", e.getMessage());
-      return false;
-    }
-    return true;
   }
 }

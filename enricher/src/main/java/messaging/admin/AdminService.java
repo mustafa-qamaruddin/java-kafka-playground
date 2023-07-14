@@ -1,5 +1,6 @@
 package messaging.admin;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.common.Node;
@@ -8,6 +9,7 @@ import java.util.Collection;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
+@Slf4j
 public class AdminService {
   private static final String BOOTSTRAP_SERVERS = "localhost:29092";
 
@@ -23,10 +25,25 @@ public class AdminService {
     this.client = AdminClient.create(props);
   }
 
-  public boolean verifyConnection() throws ExecutionException, InterruptedException {
+  private boolean verifyConnection() throws ExecutionException, InterruptedException {
     Collection<Node> nodes = this.client.describeCluster()
         .nodes()
         .get();
     return nodes != null && !nodes.isEmpty();
+  }
+
+  public boolean isBrokerUp() {
+    try {
+      if (!verifyConnection()) {
+        throw new IllegalStateException("broker is not ready");
+      }
+    } catch (InterruptedException e) {
+      // interrupted exceptions are meant to stop execution
+      Thread.currentThread().interrupt();
+    } catch (Exception e) {
+      log.error("Broker unreachable {}", e.getMessage());
+      return false;
+    }
+    return true;
   }
 }
