@@ -4,4 +4,5 @@ dependencies {
     implementation("org.apache.kafka:kafka-streams:3.5.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation("dev.failsafe:failsafe-okhttp:3.3.2")
+    testImplementation("org.mockito:mockito-core:5.4.0")
 }

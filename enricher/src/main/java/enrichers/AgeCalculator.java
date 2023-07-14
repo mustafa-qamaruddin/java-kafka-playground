@@ -9,7 +9,7 @@ import java.time.temporal.ChronoUnit;
 
 @UtilityClass
 public class AgeCalculator {
-  public long calculate(String olderDate, String newerDate) {
+  public Long calculate(String olderDate, String newerDate) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssX");
     LocalDateTime olderDateTime;
     LocalDateTime newerDateTime;
@@ -17,7 +17,7 @@ public class AgeCalculator {
       olderDateTime = LocalDateTime.parse(olderDate, formatter);
       newerDateTime = LocalDateTime.parse(newerDate, formatter);
     } catch (DateTimeParseException e) {
-      return -1;
+      return null;
     }
     return ChronoUnit.DAYS.between(olderDateTime, newerDateTime);
   }
