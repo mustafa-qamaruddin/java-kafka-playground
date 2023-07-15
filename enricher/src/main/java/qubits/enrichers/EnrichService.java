@@ -1,5 +1,6 @@
 package qubits.enrichers;
 
+import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import qubits.dataModels.classificationDecisions.ClassificationDecision;
@@ -7,6 +8,7 @@ import qubits.dataModels.domainRegistrations.DomainInfo;
 import qubits.dataModels.enrichedClassifications.EnrichedClassification;
 import qubits.rest.DomainRegistrationClient;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +30,10 @@ public class EnrichService {
     // extract canonical domains to a list
     List<String> domains = getDomainsList(classificationDecisionList, inverseLookUps);
     // find registration info
-    Map<String, DomainInfo> domainInfoMap = client.queryDomainInfos(domains);
+    Map<String, DomainInfo> domainInfoMap = null;
+    if (!domains.isEmpty()) {
+      domainInfoMap = client.queryDomainInfos(domains);
+    }
     // build enriched objects with age
     return getEnrichedClassificationList(classificationDecisionList, inverseLookUps, domainInfoMap);
   }
@@ -39,37 +44,42 @@ public class EnrichService {
       Map<String, String> inverseDomainLookup,
       Map<String, DomainInfo> domainInfoMap
   ) {
+    if (Objects.isNull(classificationDecisionList)) {
+      return Collections.emptyList();
+    }
     return classificationDecisionList.stream()
-        .filter(clf -> inverseDomainLookup.containsKey(clf.getUrl()))
-        .filter(clf -> domainInfoMap.containsKey(
-            inverseDomainLookup.get(
-                clf.getUrl()
-            )
-        ))
         .map(
-            clf -> EnrichedClassification.builder()
-                .url(clf.getUrl())
-                .domainName(
-                    inverseDomainLookup.get(
-                        clf.getUrl()
-                    )
-                )
-                .classification(clf.getClassification())
-                .logic(clf.getLogic())
-                .created(clf.getCreated())
-                .domainAgeInDays(
+            clf -> {
+              EnrichedClassification.EnrichedClassificationBuilder builder = EnrichedClassification.builder();
+              // Add basic attributes
+              builder.url(clf.getUrl())
+                  .classification(clf.getClassification())
+                  .logic(clf.getLogic())
+                  .created(clf.getCreated());
+
+              // Add canonical domain name
+              String domainName = inverseDomainLookup.get(clf.getUrl());
+              if (!Strings.isNullOrEmpty(domainName)) {
+                builder.domainName(
+                    domainName
+                );
+
+              }
+
+              // Add ageInDays
+              if (!Strings.isNullOrEmpty(domainName) && domainInfoMap.containsKey(domainName)) {
+                builder.domainAgeInDays(
                     AgeCalculator.calculate(
-                        clf.getCreated(),
-                        domainInfoMap.get(
-                            inverseDomainLookup.get(
-                                clf.getUrl()
-                            )
-                        ).getCreated()
+                        domainInfoMap.get(domainName).getCreated(),
+                        clf.getCreated()
                     )
-                )
-                .build()
+                );
+              }
+
+              // return enriched Object
+              return builder.build();
+            }
         )
-        .filter(enriched -> enriched.getDomainAgeInDays() != -1)
         .toList();
   }
 
@@ -77,8 +87,12 @@ public class EnrichService {
   private static List<String> getDomainsList(
       List<ClassificationDecision> classificationDecisionList, Map<String, String> inverseLookUps
   ) {
+    if (Objects.isNull(classificationDecisionList)) {
+      return Collections.emptyList();
+    }
     return classificationDecisionList.stream()
         .map(ClassificationDecision::getUrl)
+        .filter(url -> !url.isEmpty())
         .map(url -> {
           String domain = DomainExtractor.extract(url);
           if (domain != null) {
@@ -86,7 +100,6 @@ public class EnrichService {
           }
           return domain;
         })
-        .filter(Objects::nonNull)
         .toList();
   }
 }

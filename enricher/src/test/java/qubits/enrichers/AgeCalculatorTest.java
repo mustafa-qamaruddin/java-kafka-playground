@@ -1,8 +1,7 @@
-package enrichers;
+package qubits.enrichers;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import qubits.enrichers.AgeCalculator;
 
 class AgeCalculatorTest {
 
