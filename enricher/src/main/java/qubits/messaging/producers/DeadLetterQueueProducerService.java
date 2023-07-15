@@ -9,8 +9,8 @@ import qubits.messaging.common.ProducerService;
 public class DeadLetterQueueProducerService extends ProducerService<ClassificationDecision> {
   private static final String TOPIC_NAME = "dlq_classification_decisions";
 
-  public DeadLetterQueueProducerService() {
-    super(TOPIC_NAME, ClassificationSerializer.class.getName());
+  public DeadLetterQueueProducerService(String bootstrapServers) {
+    super(bootstrapServers, TOPIC_NAME, ClassificationSerializer.class.getName());
   }
 
   @Override

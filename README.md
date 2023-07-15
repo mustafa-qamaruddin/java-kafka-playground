@@ -36,3 +36,10 @@ kafka-console-consumer \
   --topic dlq_classification_decisions \
   --from-beginning
 ```
+
+* To run tests, either from Intellij UI, or use the commands,
+
+```shell
+cd url-classifier-enrichment
+./gradlew test
+```

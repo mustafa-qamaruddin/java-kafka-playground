@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 @UtilityClass
 public class DomainExtractor {
@@ -19,6 +20,9 @@ public class DomainExtractor {
       return null;
     }
     String host = uri.getHost();
+    if (Objects.isNull(host)) {
+      return null;
+    }
     InternetDomainName internetDomainName = InternetDomainName.from(host).topPrivateDomain();
     return internetDomainName.toString();
   }

@@ -4,7 +4,10 @@ dependencies {
     implementation("org.apache.kafka:kafka-streams:3.5.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation("dev.failsafe:failsafe-okhttp:3.3.2")
+    implementation("com.google.guava:guava:32.1.1-jre")
     testImplementation("org.mockito:mockito-core:5.4.0")
     testImplementation("org.mockito:mockito-junit-jupiter:5.4.0")
-    implementation("com.google.guava:guava:32.1.1-jre")
+    testImplementation("org.testcontainers:testcontainers:1.18.3")
+    testImplementation("org.testcontainers:junit-jupiter:1.18.3")
+    testImplementation("org.testcontainers:kafka:1.18.3")
 }

@@ -11,13 +11,11 @@ import java.util.concurrent.ExecutionException;
 
 @Slf4j
 public class AdminService {
-  private static final String BOOTSTRAP_SERVERS = "localhost:29092";
-
   private final AdminClient client;
 
-  public AdminService() {
+  public AdminService(String bootstrapServers) {
     Properties props = new Properties();
-    props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+    props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
     props.put(AdminClientConfig.DEFAULT_API_TIMEOUT_MS_CONFIG, 1500);
     props.put(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, 1000);
     props.put(AdminClientConfig.RETRIES_CONFIG, 100);

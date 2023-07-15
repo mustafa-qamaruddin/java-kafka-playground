@@ -1,4 +1,4 @@
-package qubits.messaging.dlq;
+package qubits.messaging.failedHandler;
 
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import qubits.dataModels.classificationDecisions.ClassificationDecision;
@@ -10,22 +10,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static qubits.EnricherApp.BOOTSTRAP_SERVERS;
+
 // @Singleton
-public class DeadLetterQueueService {
-  private static DeadLetterQueueService instance;
+public class FailedHandlerService {
+  private static FailedHandlerService instance;
   List<Long> deadLetterQueue;
   Map<Long, ClassificationDecision> messagesOffsets;
   DeadLetterQueueProducerService dlqProducerService;
 
-  private DeadLetterQueueService() {
+  private FailedHandlerService(DeadLetterQueueProducerService dlqProducerService) {
     deadLetterQueue = new ArrayList<>();
     messagesOffsets = new HashMap<>();
-    dlqProducerService = new DeadLetterQueueProducerService();
+    this.dlqProducerService = dlqProducerService;
   }
 
-  public static synchronized DeadLetterQueueService getInstance() {
+  public static synchronized FailedHandlerService getInstance() {
     if (instance == null) {
-      instance = new DeadLetterQueueService();
+      instance = new FailedHandlerService(
+          new DeadLetterQueueProducerService(
+              BOOTSTRAP_SERVERS
+          )
+      );
     }
     return instance;
   }
