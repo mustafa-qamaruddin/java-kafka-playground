@@ -4,7 +4,6 @@ import lombok.experimental.UtilityClass;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import qubits.rest.interceptors.CacheInterceptor;
 import qubits.rest.interceptors.JsonInterceptor;
 
 import java.io.File;
@@ -16,7 +15,6 @@ public class ClientProvider {
     Cache clientCache = new Cache(new File("./tmp"), maxSize);
     return new OkHttpClient.Builder()
         .cache(clientCache)
-        .addInterceptor(new CacheInterceptor())
         .addInterceptor(new JsonInterceptor())
         .addInterceptor(
             new HttpLoggingInterceptor(

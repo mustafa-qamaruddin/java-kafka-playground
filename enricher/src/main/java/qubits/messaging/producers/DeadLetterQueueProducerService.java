@@ -3,7 +3,6 @@ package qubits.messaging.producers;
 import lombok.extern.slf4j.Slf4j;
 import qubits.dataModels.classificationDecisions.ClassificationDecision;
 import qubits.dataModels.classificationDecisions.ClassificationSerializer;
-import qubits.messaging.common.ProducerService;
 
 @Slf4j
 public class DeadLetterQueueProducerService extends ProducerService<ClassificationDecision> {

@@ -3,7 +3,6 @@ package qubits.messaging.producers;
 import lombok.extern.slf4j.Slf4j;
 import qubits.dataModels.enrichedClassifications.EnrichedClassification;
 import qubits.dataModels.enrichedClassifications.EnrichedClassificationSerializer;
-import qubits.messaging.common.ProducerService;
 import qubits.messaging.failedHandler.FailedHandlerService;
 
 @Slf4j

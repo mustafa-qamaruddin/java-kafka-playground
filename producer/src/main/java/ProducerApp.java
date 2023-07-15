@@ -11,7 +11,8 @@ public class ProducerApp {
     ClassificationRepository repository = new ClassificationRepository();
     ClassificationAdapter adapter = new ClassificationAdapter();
     ProduceService produceService = new ProduceService();
-    while (true) {
+    int sampleSize = 1000;
+    while (sampleSize-- > 0) {
       ClassificationDecision classificationDecision = repository.findNext();
       String message;
       try {

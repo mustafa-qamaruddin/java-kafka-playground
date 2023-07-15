@@ -5,7 +5,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import qubits.dataModels.classificationDecisions.ClassificationDecision;
 import qubits.dataModels.enrichedClassifications.EnrichedClassification;
 import qubits.enrichers.EnrichService;
-import qubits.messaging.admin.AdminService;
 import qubits.messaging.consumers.ClassificationDecisionConsumerService;
 import qubits.messaging.consumers.SplitIterator;
 import qubits.messaging.failedHandler.FailedHandlerService;
@@ -21,15 +20,10 @@ public class EnricherApp {
   private static final int CHUNK_SIZE = 100;
 
   public static void main(String[] args) {
-    AdminService adminService = new AdminService(BOOTSTRAP_SERVERS);
     ClassificationDecisionConsumerService consumeService = new ClassificationDecisionConsumerService(BOOTSTRAP_SERVERS);
     DomainRegistrationClient domainRegistrationClient = new DomainRegistrationClient();
     EnrichService enrichService = new EnrichService(domainRegistrationClient);
     EnrichedClassificationProducerService produceService = new EnrichedClassificationProducerService(BOOTSTRAP_SERVERS);
-    // Broker is up?
-    if (!adminService.isBrokerUp()) {
-      return;
-    }
     while (true) {
       // Read from kafka
       ConsumerRecords<String, ClassificationDecision> records = consumeService.pollTopic();
