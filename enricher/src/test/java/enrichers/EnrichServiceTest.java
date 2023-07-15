@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class EnrichServiceTest {
@@ -36,7 +37,7 @@ class EnrichServiceTest {
             "https://example.com", 321, "2022-01-03T00:00:00Z", 123
         ),
         new ClassificationDecision(
-            "https://subdomain.example2.com", 321, "2022-01-05T00:00:00Z", 123
+            "https://subdomain.example2.com", 654, "2022-01-05T00:00:00Z", 456
         )
     );
     Mockito.when(
@@ -57,5 +58,24 @@ class EnrichServiceTest {
 
     // Then
     assertEquals(2, enrichedClassificationList.size());
+
+    // Check the values of each EnrichedClassification object
+    EnrichedClassification enrichedClassification1 = enrichedClassificationList.get(0);
+    assertEquals("https://example.com", enrichedClassification1.getUrl());
+    assertEquals("example.com", enrichedClassification1.getDomainName());
+    assertEquals(321, enrichedClassification1.getClassification());
+    assertEquals("2022-01-03T00:00:00Z", enrichedClassification1.getCreated());
+    assertEquals(123, enrichedClassification1.getLogic());
+    assertNotNull(enrichedClassification1.getDomainAgeInDays());
+    assertEquals(2, enrichedClassification1.getDomainAgeInDays());
+
+    EnrichedClassification enrichedClassification2 = enrichedClassificationList.get(1);
+    assertEquals("https://subdomain.example2.com", enrichedClassification2.getUrl());
+    assertEquals("example2.com", enrichedClassification2.getDomainName());
+    assertEquals(654, enrichedClassification2.getClassification());
+    assertEquals("2022-01-05T00:00:00Z", enrichedClassification2.getCreated());
+    assertEquals(456, enrichedClassification2.getLogic());
+    assertNotNull(enrichedClassification2.getDomainAgeInDays());
+    assertEquals(3, enrichedClassification2.getDomainAgeInDays());
   }
 }
