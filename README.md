@@ -18,7 +18,7 @@
 
 * Start Domain Registration Service: AppServer.java (domain-registration/src/main/java/AppServer.java)
 * Start Classification Decision Service: ProducerApp.java (producer/src/main/java/ProducerApp.java)
-* Start Enrichment Service: EnricherApp.java (enricher/src/main/java/EnricherApp.java)
+* Start Enrichment Service: qubits.EnricherApp.java (enricher/src/main/java/qubits/EnricherApp.java)
 * To check the results, attach to the running Kafka container, and run the command:
 
 ```shell
