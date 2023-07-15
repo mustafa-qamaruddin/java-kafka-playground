@@ -125,7 +125,7 @@ class EnrichServiceTest {
     // Check the values of the second EnrichedClassification object (no matching domain)
     EnrichedClassification enrichedClassification2 = enrichedClassificationList.get(1);
     assertEquals("https://example3.com", enrichedClassification2.getUrl());
-    assertEquals(null, enrichedClassification2.getDomainName());
+    assertNull(enrichedClassification2.getDomainName());
     assertEquals(321, enrichedClassification2.getClassification());
     assertEquals("2022-01-03T00:00:00Z", enrichedClassification2.getCreated());
     assertEquals(123, enrichedClassification2.getLogic());
