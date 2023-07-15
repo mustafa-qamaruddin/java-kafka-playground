@@ -1,4 +1,4 @@
-package enrichedclassifications;
+package dataModels.enrichedClassifications;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

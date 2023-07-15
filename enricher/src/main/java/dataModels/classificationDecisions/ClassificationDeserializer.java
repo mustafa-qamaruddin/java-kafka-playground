@@ -1,13 +1,12 @@
-package classifications;
+package dataModels.classificationDecisions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.nio.charset.StandardCharsets;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
+
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class ClassificationDeserializer implements Deserializer<ClassificationDecision> {

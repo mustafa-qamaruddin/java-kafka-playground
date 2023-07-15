@@ -1,6 +1,6 @@
 package messaging.consumers;
 
-import classifications.ClassificationDecision;
+import dataModels.classificationDecisions.ClassificationDecision;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecords;

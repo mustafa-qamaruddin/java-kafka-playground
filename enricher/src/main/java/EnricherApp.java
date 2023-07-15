@@ -1,6 +1,5 @@
-import classifications.ClassificationDecision;
-import domains.DomainRegistrationClient;
-import enrichedclassifications.EnrichedClassification;
+import dataModels.classificationDecisions.ClassificationDecision;
+import dataModels.enrichedClassifications.EnrichedClassification;
 import enrichers.EnrichService;
 import lombok.extern.slf4j.Slf4j;
 import messaging.admin.AdminService;
@@ -9,6 +8,7 @@ import messaging.consumers.SplitIterator;
 import messaging.dlq.DeadLetterQueueService;
 import messaging.producers.EnrichedClassificationProducerService;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
+import rest.DomainRegistrationClient;
 
 import java.util.ArrayList;
 import java.util.List;

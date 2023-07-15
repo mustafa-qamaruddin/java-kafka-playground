@@ -1,6 +1,6 @@
 package messaging.dlq;
 
-import classifications.ClassificationDecision;
+import dataModels.classificationDecisions.ClassificationDecision;
 import messaging.producers.DeadLetterQueueProducerService;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 

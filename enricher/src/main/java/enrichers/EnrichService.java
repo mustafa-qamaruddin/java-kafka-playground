@@ -1,11 +1,11 @@
 package enrichers;
 
-import classifications.ClassificationDecision;
-import domains.DomainInfo;
-import domains.DomainRegistrationClient;
-import enrichedclassifications.EnrichedClassification;
+import dataModels.classificationDecisions.ClassificationDecision;
+import dataModels.domainRegistrations.DomainInfo;
+import dataModels.enrichedClassifications.EnrichedClassification;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import rest.DomainRegistrationClient;
 
 import java.util.HashMap;
 import java.util.List;

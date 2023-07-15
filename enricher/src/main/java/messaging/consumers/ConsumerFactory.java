@@ -1,7 +1,7 @@
 package messaging.consumers;
 
-import classifications.ClassificationDeserializer;
-import classifications.ClassificationDecision;
+import dataModels.classificationDecisions.ClassificationDecision;
+import dataModels.classificationDecisions.ClassificationDeserializer;
 import lombok.experimental.UtilityClass;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;

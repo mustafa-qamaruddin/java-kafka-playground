@@ -1,4 +1,4 @@
-package classifications;
+package dataModels.enrichedClassifications;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -6,15 +6,15 @@ import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Serializer;
 
 @Slf4j
-public class ClassificationSerializer implements Serializer<ClassificationDecision> {
+public class EnrichedClassificationSerializer implements Serializer<EnrichedClassification> {
   private final ObjectMapper objectMapper;
 
-  public ClassificationSerializer() {
+  public EnrichedClassificationSerializer() {
     objectMapper = new ObjectMapper();
   }
 
   @Override
-  public byte[] serialize(String topic, ClassificationDecision data) {
+  public byte[] serialize(String topic, EnrichedClassification data) {
     try {
       if (data == null) {
         log.error("Null received at serializing");
@@ -22,7 +22,7 @@ public class ClassificationSerializer implements Serializer<ClassificationDecisi
       }
       return objectMapper.writeValueAsBytes(data);
     } catch (Exception e) {
-      throw new SerializationException("Error when serializing ClassificationDecision to byte[]");
+      throw new SerializationException("Error when serializing EnrichedClassification to byte[]");
     }
   }
 }

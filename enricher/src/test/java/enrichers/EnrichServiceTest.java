@@ -1,14 +1,14 @@
 package enrichers;
 
-import classifications.ClassificationDecision;
-import domains.DomainInfo;
-import domains.DomainRegistrationClient;
-import enrichedclassifications.EnrichedClassification;
+import dataModels.classificationDecisions.ClassificationDecision;
+import dataModels.domainRegistrations.DomainInfo;
+import dataModels.enrichedClassifications.EnrichedClassification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import rest.DomainRegistrationClient;
 
 import java.util.ArrayList;
 import java.util.List;

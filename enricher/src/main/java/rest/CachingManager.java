@@ -1,7 +1,8 @@
-package domains;
+package rest;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import dataModels.domainRegistrations.DomainInfo;
 
 public class CachingManager {
   private final Cache<String, DomainInfo> cache;

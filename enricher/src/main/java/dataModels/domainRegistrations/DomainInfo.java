@@ -1,4 +1,4 @@
-package classifications;
+package dataModels.domainRegistrations;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ClassificationDecision {
-  private String url;
-  private int classification;
+public class DomainInfo {
   private String created;
-  private int logic;
+  private String expires;
+  private String modified;
 }

@@ -1,7 +1,7 @@
 package messaging.producers;
 
-import classifications.ClassificationDecision;
-import classifications.ClassificationSerializer;
+import dataModels.classificationDecisions.ClassificationDecision;
+import dataModels.classificationDecisions.ClassificationSerializer;
 import lombok.extern.slf4j.Slf4j;
 import messaging.common.ProducerService;
 

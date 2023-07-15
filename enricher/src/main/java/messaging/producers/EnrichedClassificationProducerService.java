@@ -1,7 +1,7 @@
 package messaging.producers;
 
-import enrichedclassifications.EnrichedClassification;
-import enrichedclassifications.EnrichedClassificationSerializer;
+import dataModels.enrichedClassifications.EnrichedClassification;
+import dataModels.enrichedClassifications.EnrichedClassificationSerializer;
 import lombok.extern.slf4j.Slf4j;
 import messaging.common.ProducerService;
 import messaging.dlq.DeadLetterQueueService;

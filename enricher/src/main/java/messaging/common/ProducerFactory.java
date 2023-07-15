@@ -1,9 +1,5 @@
 package messaging.common;
 
-import classifications.ClassificationDecision;
-import classifications.ClassificationSerializer;
-import enrichedclassifications.EnrichedClassification;
-import enrichedclassifications.EnrichedClassificationSerializer;
 import lombok.experimental.UtilityClass;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
