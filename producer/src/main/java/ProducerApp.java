@@ -21,7 +21,7 @@ public class ProducerApp {
         log.error("Error serializing JSON message: {}", e.getMessage());
         continue;
       }
-      produceService.sendJsonMessage(message);
+      produceService.sendJsonMessage(sampleSize, message);
     }
   }
 }

@@ -8,16 +8,16 @@ import org.apache.kafka.common.KafkaException;
 
 @Slf4j
 public class ProduceService {
-  private static final String TOPIC_NAME = "classification_decisions";
-  KafkaProducer<String, String> producer;
+  private static final String TOPIC_NAME = "test";
+  KafkaProducer<Integer, String> producer;
 
   public ProduceService() {
     this.producer = ProducerFactory.createProducer();
   }
 
-  public void sendJsonMessage(String jsonMessage) {
+  public void sendJsonMessage(int key, String jsonMessage) {
     try {
-      ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, jsonMessage);
+      ProducerRecord<Integer, String> record = new ProducerRecord<>(TOPIC_NAME, key, jsonMessage);
       producer.send(record, this::producerCallback);
     } catch (KafkaException e) {
       log.error("Error sending JSON message: {}", e.getMessage());
