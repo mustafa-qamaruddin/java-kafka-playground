@@ -1,3 +1,5 @@
+# 🚀 Kafka Clients App with Producer, Consumer, & RESTful API
+
 # Components
 
 <pre>
